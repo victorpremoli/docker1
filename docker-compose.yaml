@@ -1,0 +1,49 @@
+services:
+    mysql:
+      image: mysql:8
+      container_name: mysql
+      volumes: 
+        - db:/var/lib/mysql
+      ports:
+        - 3306:3306
+      networks:
+        - network-desafio
+      environment:
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_DATABASE=rocketseat-db
+        - MYSQL_USER=admin
+        - MYSQL_PASSWORD=root
+    
+    desafio-app:
+      image: desafio-app-prod 
+      container_name: desafio-app
+      build: 
+        context: .
+        dockerfile: Dockerfile.prod
+        target: development
+      
+      ports:
+        - 3000:3000
+      networks:
+        - network-desafio
+
+      desafio-app:
+        image: desafio-app-prod 
+        container_name: desafio-app
+        build: 
+          context: .
+          dockerfile: Dockerfile.prod
+          target: development
+        ports:
+          - 3000:3000
+        networks:
+          - network-desafio
+    
+networks:
+  network-desafio:
+    name: network-desafio
+    external: true
+    driver: bridge
+
+volumes:
+  db:
